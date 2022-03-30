@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Prep data ###
+### Prep data and inspect ###
 
 Load data
 ```{r}
@@ -19,18 +19,43 @@ schizo <-  read.csv("sc_schizophrenia.csv")
 Clean data
 ```{r}
 schizo <- schizo[!is.na(schizo$FirstRating),]
+nas <- schizo[is.na(schizo$FirstRating),]
 
 schizo <- schizo %>% mutate(Feedback = OtherRating-FirstRating,
                             Change = SecondRating-FirstRating,
-                            Group = ifelse(ID > 200, "Control", "Sz"))
+                            Group = ifelse(ID >= 200, "Control", "Sz"))
 ```
+Data inspection
+```{r}
+summary(schizo)
+
+# How many trials and participants in each group?
+schizo %>% group_by(Group) %>% summarize(total_rows = n(),
+                                         n_participants = length(unique(ID)))
+
+# How many are excluded from each group?
+nas %>% 
+  mutate(Group = ifelse(ID >= 200, "Control", "Sz")) %>% 
+  group_by(Group) %>% summarize(total_rows = n(),
+                                         n_participants = length(unique(ID)))
+length(unique(schizo$ID))
+
+```
+
+
 
 
 ### Plotting ###
 Density plots
 ```{r}
+# Setup
 titlesize = 10
 ysize = 8
+
+#######################################
+## Histograms for relevant variables ##
+#######################################
+
 first <- schizo %>% 
   ggplot(aes(FirstRating)) +
     geom_bar(fill="#CC8B3C")+
@@ -67,6 +92,10 @@ other <- schizo %>%
     theme_bw() +
     theme(plot.title = element_text(size=titlesize),
           text = element_text(size=ysize)) 
+
+####################
+# Combine and save #
+####################
 
 all <- first + second + feed + other
 all
