@@ -37,3 +37,7 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Dont push data
+sc_schizophrenia.csv
+sc_students.csv
