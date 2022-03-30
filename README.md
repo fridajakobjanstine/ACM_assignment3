@@ -16,9 +16,10 @@
 - Model comparison  
   
 ### Models
-Simple model: _SR ~ logit(FR) + logit(OR)_
+Simple model: SR ~ logit(FR) + logit(OR)
 
-Weighted model: _SR ~ w<sub>1 * logit(FR) + w<sub>2 * logit(OR)_
+Weighted model: SR ~ w<sub>1</sub> &times; logit(FR) + w<sub>2</sub> &times; logit(OR)
+
 
 
 
