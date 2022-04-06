@@ -12,25 +12,30 @@
 
 data {
   int<lower=0> N;
-  array[N] int y;
-  vector[N] Source1;
-  vector[N] Source2;
+  vector[N] second_rating;
+  vector[N] first_rating;
+  vector[N] other_rating;
+  real sd1; 
+  real sd_2;
   
-
-
 }
 
 parameters {
+  real<lower=0> sigma; 
 }
 
 model {
+  target += normal_lpdf(sigma | 0.3, 0.15) - normal_lccdf(0 | 0.3, 0.15);
+  for (n in 1:N){  
+  target += normal_lpdf(second_rating[n] | logit(first_rating[n]) + logit(other_rating[n]), sigma);
+  } 
 }
 
 generated quantities{
   array[N] real log_lik;
   
   for (n in 1:N){  
-    log_lik[n] = bernoulli_logit_lpmf(y[n] | logit(Source1[n]) +  logit(Source2[n]));
+    log_lik[n] = normal_lpdf(second_rating[n] | logit(first_rating[n]) + logit(other_rating[n]), sigma);
   }
   
 }
