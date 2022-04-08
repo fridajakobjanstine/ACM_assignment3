@@ -37,11 +37,15 @@ Here, differences are more easy to detect. We see some participant who generally
 
 ## Analysis
 ### Models
-We tested two different Bayesian models. 
+We tested two different Bayesian models. First, we do a simple model in which the only parameter to estimate is the error, i.e. sigma. Then, we do a more complex model in which we estimate weights for FirstRating and OtherRating along with sigma. 
 
-Simple model: SR ~ logit(FR) + logit(OR) + ε
+Simple model: SR ~ logit(FR) + logit(OR) + sigma
 
-Weighted model: SR ~ w<sub>1</sub> &times; logit(FR) + w<sub>2</sub> &times; logit(OR) + ε
+Weighted model: SR ~ w<sub>1</sub> &times; logit(FR) + w<sub>2</sub> &times; logit(OR) + sigma
+
+---- fix models so they look more mathy  
+
+We run these models using ......... with 2 chains..........
 
 ### Priors
 For sigma, we used a normally distributed prior with a mean of 0.3 and a SD of 0.15 with a lower boundary of 0. When setting normally distributed priors, it can be common practice to use the standard deviation of the data as the mean and half of that as the SD. However, as the standard deviation of the data in this case is around 0.1, this would lead to a very narrow/certain prior, and therefore we chose to use a slightly more conservative prior. 
@@ -51,10 +55,13 @@ For the weights, we used normally distributed priors centered around 0 with a SD
 ## Model quality checks
 
 ### Markov chains
-Below we plot trace plots of the Markov chains for weights and sigma. We do this for both the simple and weighted Bayes.
-![weighted bayes trace plot](fig/mcmc_traces_weigthed.png "Trace plots - weighted Bayes")
+Below we visualise trace plots of the Markov chains.
 
-----insert trace for simple model 
+For the simple Bayes, we plot sigma:
+![simple bayes trace plot](fig/sigma_mcmc_trace_simple.png "Trace plots - simple Bayes")
+
+And for the weighted Bayes, we plot sigma along with both weights:
+![weighted bayes trace plot](fig/mcmc_traces_weigthed.png "Trace plots - weighted Bayes")
 
 We see that the chains are scattered around a mean and that they seem to converge. This seems to be the case for both weights and sigma. 
 
@@ -66,7 +73,12 @@ This figure shows prior-posterior update checks for the four parameters weight 1
 ### Prior predictive checks
 
 ### Loo stuff...
-![loo weighted bayes](fig/loo_weighted.png "Loo weighted Bayes")
+Simple:
+![loo simple bayes](fig/pareto_k_diagnostics_simple.png.png "Loo simple Bayes")
+
+Weighted:
+![loo weighted bayes](fig/pareto_k_diagnostics_weigthed.png.png "Loo weighted Bayes")
+
 
 
 ## Results
