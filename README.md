@@ -26,7 +26,7 @@ In this analysis, we implement the model SecondRating ~ FirstRating + OtherRatin
 
 ![model pooling control](fig/pool_control.png "Model visualization - control group")
 ![model pooling clinical](fig/pool_clinical.png "Model visualization - clinical group")
-blabla interpret figures
+There are patterns in the data that suggest mistakes in the experimental setup. For example, it seems that no participants were told the group had rated the trustworthiness as 4 (green) and then gave 3 as their second rating. Likewise, no participants were told the group had rated the trustworthiness as 6 (purple) and then gave 7 as their second rating. This is regardless of what their own first choice was. 
 
 
 To inspect individual differences, the figures below show the same as the figures above, but with one panel for each participant. 
@@ -57,6 +57,9 @@ We see that the chains are scattered around a mean and that they seem to converg
 
 
 ### Prior-posterior updates
+
+![Prior-posterior updates](fig/pp_updates.png "Prior-posterior updates")
+This figure shows prior-posterior update checks for the four parameters weight 1, weight 2, w1 and w2. The _weight_ parameters are estimated by the model based on the priors we set. The _w_ parameters are passed through the transformation: w = 0.5 + inv_logit(weight)/2. This means that while the _weight_ parameters are what is being estimated, it is actually the _w_ parameters we can interpret. Common to all pp update plots is that the posterior is many times more narrow and certain, even given the relatively uninformative priors. This increases our belief in that the model has been successfully fitted to the data. 
 
 ### Prior predictive checks
 
