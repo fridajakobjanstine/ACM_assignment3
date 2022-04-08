@@ -1,5 +1,5 @@
 library(pacman)
-p_load(tidyverse, patchwork, wesanderson, rcartocolor, cmdstanr, brms)
+p_load(tidyverse, patchwork, wesanderson, rcartocolor, cmdstanr, brms, posterior)
 schizo <-  read.csv("sc_schizophrenia.csv")
 
 schizo <- schizo[!is.na(schizo$FirstRating),]
@@ -37,7 +37,7 @@ samples <- mod$sample(
 )
 
 
-samples$summary()
+samples$summary()$loo
 
 draws_df <- as_draws_df(samples$draws())
 
@@ -67,19 +67,48 @@ samples <- mod$sample(
   chains = 2,
   parallel_chains = 2,
   threads_per_chain = 2,
-  iter_warmup = 1500,
-  iter_sampling = 3000,
+  iter_warmup = 1000,
+  iter_sampling = 2000,
   refresh = 500,
   max_treedepth = 20,
   adapt_delta = 0.99
 )
-samples$output(2)
+# Extract and save df
 draws_df <- as_draws_df(samples$draws())
+write_csv(draws_df, 'draws_df_weighted.csv')
+
+samples$summary() 
+
+# Extract and save loo
+loo_weighted <- samples$loo(save_psis = TRUE, cores = 3)
+plot(loo_weighted)
+write_csv(as.data.frame(loo_weighted), 'loo_weighted.csv')
 
 
-#samples$summary()
+ # Plotting mcmc trace 
+ggplot(draws_df, aes(.iteration, w1, group=factor(.chain), color=factor(.chain))) + 
+  geom_line(alpha=0.85) +
+  scale_colour_manual(values=c("#0D4468","#37AAF6"))+
+  theme_classic() +
+  labs(title="MCMC trace for weight of first rating", 
+       x='Iterations', 
+       y="Weight of first rating",
+       color='Chain')
 
+ggplot(draws_df, aes(.iteration, w2, group=factor(.chain), color=factor(.chain))) + 
+  geom_line(alpha=0.85) +
+  scale_colour_manual(values=c("#0D4468","#37AAF6"))+
+  theme_classic() +
+  labs(title="MCMC trace for weight of other's ratings", 
+       x='Iterations', 
+       y="Weight of other's ratings",
+       color='Chain')
 
-ggplot(draws_df, aes(.iteration, weight2, group=.chain, color=.chain)) + geom_line() + theme_classic()
-
-
+ggplot(draws_df, aes(.iteration, sigma, group=factor(.chain), color=factor(.chain))) + 
+  geom_line(alpha=0.85) +
+  scale_colour_manual(values=c("#0D4468","#37AAF6"))+
+  theme_classic() +
+  labs(title="MCMC trace for sigma", 
+       x='Iterations', 
+       y="Sigma",
+       color='Chain')
