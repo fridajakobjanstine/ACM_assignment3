@@ -39,6 +39,7 @@ vignettes/*.pdf
 .Renviron
 
 # Data
+*.csv
 
 sc_students.csv
 sc_schizophrenia.csv
