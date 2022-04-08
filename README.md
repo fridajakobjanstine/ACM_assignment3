@@ -37,12 +37,16 @@ Here, differences are more easy to detect. We see some participant who generally
 
 ## Analysis
 ### Models
-Simple model: SR ~ logit(FR) + logit(OR)
+We tested two different Bayesian models. 
 
-Weighted model: SR ~ w<sub>1</sub> &times; logit(FR) + w<sub>2</sub> &times; logit(OR)
+Simple model: SR ~ logit(FR) + logit(OR) + ε
+
+Weighted model: SR ~ w<sub>1</sub> &times; logit(FR) + w<sub>2</sub> &times; logit(OR) + ε
 
 ### Priors
+For sigma, we used a normally distributed prior with a mean of 0.3 and a SD of 0.15 with a lower boundary of 0. When setting normally distributed priors, it can be common practice to use the standard deviation of the data as the mean and half of that as the SD. However, as the standard deviation of the data in this case is around 0.1, this would lead to a very narrow/certain prior, and therefore we chose to use a slightly more conservative prior. 
 
+For the weights, we used normally distributed priors centered around 0 with a SD of 1. 
 
 ## Model quality checks
 
@@ -54,8 +58,6 @@ Below we plot trace plots of the Markov chains for weights and sigma. We do this
 
 We see that the chains are scattered around a mean and that they seem to converge. This seems to be the case for both weights and sigma. 
 
-
-
 ### Prior-posterior updates
 
 ![Prior-posterior updates](fig/pp_updates.png "Prior-posterior updates")
@@ -63,7 +65,9 @@ This figure shows prior-posterior update checks for the four parameters weight 1
 
 ### Prior predictive checks
 
-### Loo stuff
+### Loo stuff...
+![loo weighted bayes](fig/loo_weighted.png "Loo weighted Bayes")
+
 
 ## Results
 
