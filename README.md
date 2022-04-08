@@ -84,6 +84,18 @@ Weighted:
 
 
 ## Results
+We performed .......sorry dont remember what i wanted to write
+
+ | elpd_diff | se_diff | 
+--- | --- | --- | 
+simple Bayes | 0.0 | 0.0 |
+weighted Bayes | -24669.1 | 121.5 |
+
+ | weight |  
+--- | --- | 
+simple Bayes | 0.0 |
+weighted Bayes | 1.0 | 
+
 
 
 
