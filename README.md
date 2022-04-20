@@ -86,17 +86,17 @@ Weighted:
 ## Results
 We performed .......sorry dont remember what i wanted to write
 
- | elpd_diff | se_diff | 
---- | --- | --- | 
+| model | elpd_diff | se_diff | 
+|--- |--- | --- |
 simple Bayes | 0.0 | 0.0 |
 weighted Bayes | -24669.1 | 121.5 |
 
- | weight |  
---- | --- | 
+| model | weight |  
+| --- | --- | 
 simple Bayes | 0.0 |
 weighted Bayes | 1.0 | 
 
-
+Upon comparing the two models, we see that the weightedBayes is the preferred model. The elpd difference between the two models is above 4 and has a relatively small standard error. These results speak in favor of using the weightedBayes model over simpleBayes.
 
 
 
