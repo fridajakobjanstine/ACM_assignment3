@@ -12,7 +12,7 @@ We then added the columns Feedback (defined as  OtherRating-FirstRating), and Ch
 
 Furthermore, the data includes columns on reaction times, participant ID, trial number (out of 153) for each of the two repetitions, and ID of the picture shown.  
 
-We found that 1008 rows in the patient data had missing values in the FirstRating. Since this column is important for the analysis, we decided to exclude these rows from the analysis. The missing data came from 7 participant in total, 1 control and 6 clinical patients (NOTE TO SELF: check whether it is always all rows from one participant or whether we exclude just one row from one participant and discuss whether this should be taken into account). In the remaining dataset, data from a total of 76 participants was included. Hereof, 40 were control and 36 were clinical patients. Even though the two groups were therefor not exactly balanced, we still argue that the amount of data available was large enough that the analysis could be conducted. 
+We found that 1008 rows in the patient data had missing values in the FirstRating. Since this column is important for the analysis, we decided to exclude these rows from the analysis. The missing data came from 7 participant in total, 1 control and 6 clinical patients. In the remaining dataset, data from a total of 76 participants was included. Hereof, 40 were control and 36 were clinical patients. Even though the two groups were therefor not exactly balanced, we still argue that the amount of data available was large enough that the analysis could be conducted. 
 
 Below follows visualizations of the cleaned dataset.
 
@@ -72,9 +72,10 @@ We see that the chains are scattered around a mean and that they seem to converg
 ![Prior-posterior updates](fig/pp_updates.png "Prior-posterior updates")
 This figure shows prior-posterior update checks for the four parameters weight 1, weight 2, w1 and w2. The _weight_ parameters are estimated by the model based on the priors we set. The _w_ parameters are passed through the transformation: w = 0.5 + inv_logit(weight)/2. This means that while the _weight_ parameters are what is being estimated, it is actually the _w_ parameters we can interpret. Common to all pp update plots is that the posterior is many times more narrow and certain, even given the relatively uninformative priors. This increases our belief in that the model has been successfully fitted to the data. 
 
-### Prior predictive checks
 
-### Loo stuff...
+### PSIS diagnostics
+Below we visualise Pareto smoothed importance sample (PSIS) diagnostic plots for both models to inspect the Pareto _k_ estimates for each data point.
+
 Simple:  
 
 ![loo simple bayes](fig/pareto_k_diagnostics_simple.png "Loo simple Bayes")
@@ -84,9 +85,12 @@ Weighted:
 ![loo weighted bayes](fig/pareto_k_diagnostics_weighted.png "Loo weighted Bayes")
 
 
+We see that all data points have a Pareto _k_ < 0.5.  For the weighted Bayes, we see two data points slightly above the distribution the rest, however, they are still relatively close and not near 0.5. We therefore interpret these results as not indicating extreme values that would influence the model to an extent that we should worry about. 
+
+
 
 ## Results
-We performed .......sorry dont remember what i wanted to write
+Using the loo_compare() and loo_model_weights() functions from the [loo](https://www.rdocumentation.org/packages/loo/versions/2.4.1)-package, we extract the estimated difference in expected predictive accuracy (elpd-diff) along with their weights:
 
 | model | elpd_diff | se_diff | 
 |--- |--- | --- |
@@ -98,7 +102,7 @@ weighted Bayes | -24669.1 | 121.5 |
 simple Bayes | 0.0 |
 weighted Bayes | 1.0 | 
 
-Upon comparing the two models, we see that the weightedBayes is the preferred model. The elpd difference between the two models is above 4 and has a relatively small standard error. These results speak in favor of using the weightedBayes model over simpleBayes.
+Upon comparing the two models, we see that the weighte dBayes is the preferred model. The elpd difference between the two models is above 4 and has a relatively small difference in standard error. These results indicate that the expected predictive accuracy is higher for the weighted Bayes model and speak in favor of using the weighted Bayes model over simple Bayes to model the behaviour of the participants in this dataset. 
 
 
 
