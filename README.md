@@ -39,13 +39,15 @@ Here, differences are more easy to detect. We see some participant who generally
 ### Models
 We tested two different Bayesian models. First, we do a simple model in which the only parameter to estimate is the error, i.e. sigma. Then, we do a more complex model in which we estimate weights for FirstRating and OtherRating along with sigma. 
 
-Simple model: SR ~ logit(FR) + logit(OR) + sigma
+Simple model: 
 
-Weighted model: SR ~ w<sub>1</sub> &times; logit(FR) + w<sub>2</sub> &times; logit(OR) + sigma
+![\Large simple)](https://latex.codecogs.com/svg.image?SR%5Csim%20logit(FR)%20&plus;%20logit(OR)%20&plus;%20%5Csigma)
 
----- fix models so they look more mathy  
+Weighted model: 
 
-We run these models using ......... with 2 chains..........
+![\Large weighted](https://latex.codecogs.com/svg.image?SR%5Csim%20w_1%20%5Ccdot%20logit(FR)%20&plus;%20w_2%20%5Ccdot%20logit(OR)%20&plus;%20%5Csigma)
+
+These models were run using 2 parallel chains with 2 threads per chain, 1500 warmup iterations and 3000 sampling iterations. We used a maximum treedepth of 20 and an adapt delta of 0.99. 
 
 ### Priors
 For sigma, we used a normally distributed prior with a mean of 0.3 and a SD of 0.15 with a lower boundary of 0. When setting normally distributed priors, it can be common practice to use the standard deviation of the data as the mean and half of that as the SD. However, as the standard deviation of the data in this case is around 0.1, this would lead to a very narrow/certain prior, and therefore we chose to use a slightly more conservative prior.   
